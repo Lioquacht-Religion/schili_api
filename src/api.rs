@@ -3,7 +3,7 @@
 use std::collections::HashSet;
 
 use bigdecimal::BigDecimal;
-use chrono::{serde::ts_seconds, Utc};
+use chrono::{serde::ts_seconds, DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize)]
@@ -19,6 +19,13 @@ pub enum SensorType {
     Humidity,
     Airpressure,
     Co2,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct GetSensorTempMeasuresRange {
+    pub sensor_reference: String,
+    pub start_datetime: DateTime<Utc>,
+    pub end_datetime: DateTime<Utc>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
