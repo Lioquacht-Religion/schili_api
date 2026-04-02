@@ -21,6 +21,7 @@ pub enum SensorType {
     Co2,
 }
 
+/*
 #[derive(Debug, Deserialize, Serialize)]
 pub struct GetSensorTempMeasuresRange {
     pub sensor_reference: String,
@@ -43,6 +44,34 @@ pub struct SensorSingleTempMeasure {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct TemperatureMeasurement {
     pub temp_celsius: BigDecimal,
+    #[serde(with = "ts_seconds")]
+    pub measure_time: chrono::DateTime<Utc>,
+}
+
+*/
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct GetSensorSimpleMeasuresRange {
+    pub sensor_reference: String,
+    pub start_datetime: DateTime<Utc>,
+    pub end_datetime: DateTime<Utc>,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct SensorSimpleMeasurements {
+    pub sensor_reference: String,
+    pub measurements: Vec<SimpleMeasurement>,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct SensorSingleSimpleMeasure {
+    pub sensor_reference: String,
+    pub measure: SimpleMeasurement,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct SimpleMeasurement {
+    pub measurement: BigDecimal,
     #[serde(with = "ts_seconds")]
     pub measure_time: chrono::DateTime<Utc>,
 }
