@@ -3,7 +3,7 @@
 use std::collections::HashSet;
 
 use bigdecimal::BigDecimal;
-use chrono::{serde::ts_seconds, DateTime, Utc};
+use chrono::{DateTime, Duration, Utc, serde::ts_seconds};
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize)]
@@ -21,40 +21,19 @@ pub enum SensorType {
     Co2,
 }
 
-/*
-#[derive(Debug, Deserialize, Serialize)]
-pub struct GetSensorTempMeasuresRange {
-    pub sensor_reference: String,
-    pub start_datetime: DateTime<Utc>,
-    pub end_datetime: DateTime<Utc>,
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-pub struct SensorTempMeasurements {
-    pub sensor_reference: String,
-    pub temp_measurements: Vec<TemperatureMeasurement>,
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-pub struct SensorSingleTempMeasure {
-    pub sensor_reference: String,
-    pub temp_measure: TemperatureMeasurement,
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-pub struct TemperatureMeasurement {
-    pub temp_celsius: BigDecimal,
-    #[serde(with = "ts_seconds")]
-    pub measure_time: chrono::DateTime<Utc>,
-}
-
-*/
-
 #[derive(Debug, Deserialize, Serialize)]
 pub struct GetSensorSimpleMeasuresRange {
     pub sensor_reference: String,
     pub start_datetime: DateTime<Utc>,
     pub end_datetime: DateTime<Utc>,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct GetSensorSimpleMeasuresIntervalsRange {
+    pub sensor_reference: String,
+    pub start_datetime: DateTime<Utc>,
+    pub end_datetime: DateTime<Utc>,
+    pub interval: Duration
 }
 
 #[derive(Debug, Deserialize, Serialize)]
