@@ -14,10 +14,13 @@ pub struct Sensor {
 }
 
 #[derive(Deserialize, Serialize, Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
+#[serde(rename_all = "lowercase")]
 pub enum SensorType {
     Temperature,
     Humidity,
     Airpressure,
+    BatteryVoltage,
+    ChipTemperature,
     Co2,
 }
 
@@ -86,6 +89,8 @@ impl From<&SensorType> for &str {
             SensorType::Temperature => "temperature",
             SensorType::Humidity => "humidity",
             SensorType::Airpressure => "airpressure",
+            SensorType::ChipTemperature => "ChipTemperature",
+            SensorType::BatteryVoltage => "BatteryVoltage",
             SensorType::Co2 => "co2",
         }
     }
