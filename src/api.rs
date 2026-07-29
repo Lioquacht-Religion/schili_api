@@ -1,6 +1,6 @@
 // api.rs
 
-use std::collections::HashSet;
+use std::{collections::HashSet, str::FromStr};
 
 use bigdecimal::BigDecimal;
 use chrono::{DateTime, Duration, Utc, serde::ts_seconds};
@@ -13,7 +13,7 @@ pub struct Sensor {
     pub sensor_types: HashSet<SensorType>,
 }
 
-#[derive(Deserialize, Serialize, Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Deserialize, Serialize, Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 #[serde(rename_all = "lowercase")]
 pub enum SensorType {
     Temperature,
@@ -83,15 +83,36 @@ impl Sensor {
     }
 }
 
+impl SensorType{
+    pub fn to_str(&self) -> &'static str{
+        self.into()
+    }
+}
+
 impl From<&SensorType> for &str {
     fn from(value: &SensorType) -> Self {
         match value {
             SensorType::Temperature => "temperature",
             SensorType::Humidity => "humidity",
             SensorType::Airpressure => "airpressure",
-            SensorType::ChipTemperature => "ChipTemperature",
-            SensorType::BatteryVoltage => "BatteryVoltage",
+            SensorType::ChipTemperature => "chiptemperature",
+            SensorType::BatteryVoltage => "batteryvoltage",
             SensorType::Co2 => "co2",
+        }
+    }
+}
+
+impl FromStr for SensorType{
+    type Err = ();
+    fn from_str(value: &str) -> Result<Self, Self::Err> {
+        match value {
+    "temperature" => Ok(SensorType::Temperature),
+    "humidity" => Ok(SensorType::Humidity),
+    "airpressure" => Ok(SensorType::Airpressure),
+    "chiptemperature" => Ok(SensorType::ChipTemperature),
+    "co2" => Ok(SensorType::Co2),
+    "batteryvoltage" => Ok(SensorType::BatteryVoltage),
+    _ => Err(()),
         }
     }
 }
