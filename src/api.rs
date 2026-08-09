@@ -1,6 +1,6 @@
 // api.rs
 
-use std::{collections::HashSet, str::FromStr};
+use std::{collections::HashSet, str::FromStr, usize};
 
 use bigdecimal::BigDecimal;
 use chrono::{DateTime, Duration, Utc, serde::ts_seconds};
@@ -56,6 +56,18 @@ pub struct SimpleMeasurement {
     pub measurement: BigDecimal,
     #[serde(with = "ts_seconds")]
     pub measure_time: chrono::DateTime<Utc>,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct SensorTypedSimpleMeasurements {
+    pub sensor_reference: String,
+    pub measurements: Vec<SensorTypedSimpleMeasurement>,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct SensorTypedSimpleMeasurement {
+    pub sensor_type: SensorType,
+    pub measure: SimpleMeasurement,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -115,4 +127,42 @@ impl FromStr for SensorType{
     _ => Err(()),
         }
     }
+}
+
+#[derive(Deserialize, Serialize)]
+pub enum ErrorCode{
+    PlaceHolder,
+    Custom(i32),
+}
+
+impl ErrorCode{
+    pub fn get_code(&self) -> i32{
+        match self {
+            ErrorCode::PlaceHolder => 0,
+            ErrorCode::Custom(custom_code) => *custom_code,
+        }
+    }
+}
+
+impl From<i32> for ErrorCode{
+    fn from(value: i32) -> Self{
+        match value{
+            0 => ErrorCode::PlaceHolder,
+            v => ErrorCode::Custom(v),
+        }
+    }
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct SensorError{
+    pub sensor_reference: String,
+    pub error: Error,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct Error{
+    pub error_code: ErrorCode,
+    pub error_text: String,
+    #[serde(with = "ts_seconds")]
+    pub error_time: chrono::DateTime<Utc>,
 }

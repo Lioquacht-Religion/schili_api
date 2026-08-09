@@ -10,7 +10,8 @@ pub static TOPICS: LazyLock<Topics> = LazyLock::new(|| Topics {
     humidity: sensor_humidity_topic(UUID),
     air_pressure: sensor_airpressure_topic(UUID),
     co2: sensor_co2_topic(UUID),
-    battery_voltage: sensor_battery_voltage_topic(UUID)
+    battery_voltage: sensor_battery_voltage_topic(UUID),
+    error: sensor_error_topic(UUID),
 });
 
 pub struct Topics{
@@ -20,6 +21,7 @@ pub struct Topics{
     pub air_pressure: String,
     pub co2: String,
     pub battery_voltage: String,
+    pub error: String,
 }
 
 pub fn chip_temperature_topic(uuid: &str) -> String {
@@ -44,4 +46,8 @@ pub fn sensor_co2_topic(uuid: &str) -> String {
 
 pub fn sensor_battery_voltage_topic(uuid: &str) -> String {
     format!("{}/battery/voltage/sensor", uuid)
+}
+
+pub fn sensor_error_topic(uuid: &str) -> String {
+    format!("{}/error/sensor", uuid)
 }
