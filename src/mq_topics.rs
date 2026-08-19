@@ -9,6 +9,7 @@ pub static TOPICS: LazyLock<Topics> = LazyLock::new(|| Topics {
     temp: sensor_temperature_topic(UUID),
     humidity: sensor_humidity_topic(UUID),
     air_pressure: sensor_airpressure_topic(UUID),
+    light_intensity: sensor_lightintensity_topic(UUID),
     co2: sensor_co2_topic(UUID),
     battery_voltage: sensor_battery_voltage_topic(UUID),
     measurement_bundle: sensor_measurements_bundle_topic(UUID),
@@ -20,6 +21,7 @@ pub struct Topics{
     pub temp: String,
     pub humidity: String,
     pub air_pressure: String,
+    pub light_intensity: String,
     pub co2: String,
     pub battery_voltage: String,
     pub measurement_bundle: String,
@@ -40,6 +42,10 @@ pub fn sensor_humidity_topic(uuid: &str) -> String {
 
 pub fn sensor_airpressure_topic(uuid: &str) -> String {
     format!("{}/airpressure/sensor", uuid)
+}
+
+pub fn sensor_lightintensity_topic(uuid: &str) -> String {
+    format!("{}/lightintensity/sensor", uuid)
 }
 
 pub fn sensor_co2_topic(uuid: &str) -> String {
