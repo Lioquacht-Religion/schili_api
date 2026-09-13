@@ -1,6 +1,6 @@
 // api.rs
 
-use std::{collections::HashSet, str::FromStr, usize};
+use std::{collections::HashSet, str::FromStr};
 
 use bigdecimal::BigDecimal;
 use chrono::{DateTime, Duration, Utc, serde::ts_seconds};
@@ -53,6 +53,13 @@ pub struct SensorSingleSimpleMeasure {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
+pub struct SimpleMeasurementF32 {
+    pub measurement: f32,
+    #[serde(with = "ts_seconds")]
+    pub measure_time: chrono::DateTime<Utc>,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
 pub struct SimpleMeasurement {
     pub measurement: BigDecimal,
     #[serde(with = "ts_seconds")]
@@ -65,10 +72,22 @@ pub struct SensorTypedSimpleMeasurements {
     pub measurements: Vec<SensorTypedSimpleMeasurement>,
 }
 
+#[derive(Debug, Serialize)]
+pub struct SensorTypedSimpleMeasurementsBorrowed<'m> {
+    pub sensor_reference: &'m str,
+    pub measurements: &'m [SensorTypedSimpleMeasurementF32],
+}
+
 #[derive(Debug, Deserialize, Serialize)]
 pub struct SensorTypedSimpleMeasurement {
     pub sensor_type: SensorType,
     pub measure: SimpleMeasurement,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct SensorTypedSimpleMeasurementF32 {
+    pub sensor_type: SensorType,
+    pub measure: SimpleMeasurementF32,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
